@@ -1,0 +1,21 @@
+{
+  "name": "graphql-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "express-graphql": "^0.6.3",
+    "graphql": "^0.9.1",
+    "node-fetch": "^1.6.3"
+  }
+}
