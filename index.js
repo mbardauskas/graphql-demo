@@ -10,6 +10,22 @@ const {
   GraphQLString,
 } = graphql;
 
+const get = (url) => {
+  console.log('REQUEST TO:', url);
+  return fetch(url).then(res => res.json());
+};
+
+const CharacterType = new GraphQLObjectType({
+  name: 'Character',
+  fields: () => ({
+    name: {type: GraphQLString},
+    height: {type: GraphQLString},
+    mass: {type: GraphQLString},
+    hair_color: {type: GraphQLString},
+    films: {type: new GraphQLList(GraphQLString)}
+  }),
+});
+
 const FilmType = new GraphQLObjectType({
   name: 'Film',
   fields: () => ({
@@ -19,7 +35,9 @@ const FilmType = new GraphQLObjectType({
     director: {type: GraphQLString},
     episode_id: {type: GraphQLString},
     characters: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(CharacterType),
+      resolve: (film) =>
+        Promise.all(film.characters.map((charUrl) => get(charUrl))),
     },
   }),
 });
@@ -29,11 +47,7 @@ const QueryType = new GraphQLObjectType({
   fields: () => ({
     allFilms: {
       type: new GraphQLList(FilmType),
-      resolve: () =>
-        fetch('http://swapi.co/api/films?format=json')
-          .then(res => res.json())
-          .then(json => json.results)
-        ,
+      resolve: () => get('http://swapi.co/api/films?format=json').then(json => json.results),
     }
   }),
 });
