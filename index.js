@@ -48,15 +48,12 @@ const FilmType = new GraphQLObjectType({
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    allFilms: {
-      type: new GraphQLList(FilmType),
-      resolve: () => get('http://swapi.co/api/films?format=json').then(json => json.results),
-    },
     films: {
       type: new GraphQLList(FilmType),
       args: {
         ids: {type: new GraphQLList(GraphQLString)}
       },
+      //resolve: (root, args) => args.ids.map(id => get(`http://swapi.co/api/films/${id}/`))
       resolve: (root, args, context) => context.filmLoader.loadMany(args.ids)
     }
   }),
