@@ -23,10 +23,6 @@ const CharacterType = new GraphQLObjectType({
     height: {type: GraphQLString},
     mass: {type: GraphQLString},
     hair_color: {type: GraphQLString},
-    films: {
-      type: new GraphQLList(FilmType),
-      resolve: (char, args, context) => context.filmByUrlLoader.loadMany(char.films)
-    }
   }),
 });
 
@@ -40,7 +36,7 @@ const FilmType = new GraphQLObjectType({
     episode_id: {type: GraphQLString},
     characters: {
       type: new GraphQLList(CharacterType),
-      resolve: (film, args, context) => context.charLoader.loadMany(film.characters)
+      resolve: (film, args, context) => film.characters.map(get)
     },
   }),
 });
@@ -53,38 +49,14 @@ const QueryType = new GraphQLObjectType({
       args: {
         ids: {type: new GraphQLList(GraphQLString)}
       },
-      //resolve: (root, args) => args.ids.map(id => get(`http://swapi.co/api/films/${id}/`))
-      resolve: (root, args, context) => context.filmLoader.loadMany(args.ids)
+      resolve: (root, args) => args.ids.map(id => get(`http://swapi.co/api/films/${id}/`))
     }
   }),
 });
 
 const app = express();
 
-const filmMap = new Map();
-const filmLoader = new DataLoader(
-  ids => Promise.all(ids.map((id) => get(`http://swapi.co/api/films/${id}/`))),
-  {
-    cacheKeyFn: key => `http://swapi.co/api/films/${key}/`,
-    cacheMap: filmMap,
-  }
-);
-
-const filmByUrlLoader = new DataLoader(
-  ids => Promise.all(ids.map(get)),
-  {cacheMap: filmMap}
-);
-
-const charLoader = new DataLoader(
-  urls => Promise.all(urls.map(get))
-);
-
 app.use('/graphql', graphqlHTTP({
-  context: {
-    charLoader,
-    filmLoader,
-    filmByUrlLoader,
-  },
   schema: new GraphQLSchema({
     query: QueryType,
   }),
