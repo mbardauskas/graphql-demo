@@ -36,7 +36,7 @@ const FilmType = new GraphQLObjectType({
     episode_id: {type: GraphQLString},
     characters: {
       type: new GraphQLList(CharacterType),
-      resolve: (film, args, context) => film.characters.map(get)
+      resolve: (film) => film.characters.map(get)
     },
   }),
 });
