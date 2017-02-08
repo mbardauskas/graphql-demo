@@ -23,6 +23,10 @@ const CharacterType = new GraphQLObjectType({
     height: {type: GraphQLString},
     mass: {type: GraphQLString},
     hair_color: {type: GraphQLString},
+    films: {
+      type: new GraphQLList(FilmType),
+      resolve: (char) => char.films.map(get)
+    }
   }),
 });
 
@@ -36,7 +40,7 @@ const FilmType = new GraphQLObjectType({
     episode_id: {type: GraphQLString},
     characters: {
       type: new GraphQLList(CharacterType),
-      resolve: (film, args, context) => film.characters.map(get)
+      resolve: (film) => film.characters.map(get)
     },
   }),
 });
