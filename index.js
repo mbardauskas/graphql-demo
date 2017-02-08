@@ -40,7 +40,7 @@ const FilmType = new GraphQLObjectType({
     episode_id: {type: GraphQLString},
     characters: {
       type: new GraphQLList(CharacterType),
-      resolve: (film, args, context) => context.charLoader.loadMany(film.characters)
+      resolve: (film, args, context) => context.charByUrlLoader.loadMany(film.characters)
     },
   }),
 });
@@ -53,7 +53,6 @@ const QueryType = new GraphQLObjectType({
       args: {
         ids: {type: new GraphQLList(GraphQLString)}
       },
-      //resolve: (root, args) => args.ids.map(id => get(`http://swapi.co/api/films/${id}/`))
       resolve: (root, args, context) => context.filmLoader.loadMany(args.ids)
     }
   }),
@@ -71,18 +70,18 @@ const filmLoader = new DataLoader(
 );
 
 const filmByUrlLoader = new DataLoader(
-  ids => Promise.all(ids.map(get)),
+  urls => Promise.all(urls.map(get)),
   {cacheMap: filmMap}
 );
 
-const charLoader = new DataLoader(
+const charByUrlLoader = new DataLoader(
   urls => Promise.all(urls.map(get))
 );
 
 app.use('/graphql', graphqlHTTP({
   context: {
-    charLoader,
     filmLoader,
+    charByUrlLoader,
     filmByUrlLoader,
   },
   schema: new GraphQLSchema({
