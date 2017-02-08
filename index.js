@@ -1,6 +1,6 @@
+const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const graphql = require('graphql');
-const express = require('express');
 const fetch = require('node-fetch');
 const DataLoader = require('dataloader');
 
