@@ -1,0 +1,97 @@
+<templateSet group="graphql-demo">
+  <template name="demo11" value="const express = require('express');&#10;const graphqlHTTP = require('express-graphql');&#10;const graphql = require('graphql');&#10;const fetch = require('node-fetch');&#10;const DataLoader = require('dataloader');&#10;&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo12" value="const {&#10;  GraphQLList,&#10;  GraphQLObjectType,&#10;  GraphQLSchema,&#10;  GraphQLString,&#10;} = graphql;&#10;&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo13" value="const app = express();&#10;&#10;app.use('/graphql', graphqlHTTP({&#10;  schema: new GraphQLSchema({&#10;    query: QueryType,&#10;  }),&#10;  graphiql: true&#10;}));&#10;&#10;app.listen(3000);&#10;&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo21" value="const QueryType = new GraphQLObjectType({&#10;  name: 'Query',&#10;  fields: () =&gt; ({&#10;    films: {&#10;      type: new GraphQLList(FilmType),&#10;      args: {&#10;        ids: {type: new GraphQLList(GraphQLString)}&#10;      },&#10;      resolve: (root, args) =&gt; args.ids.map(id =&gt; get(`http://swapi.co/api/films/${id}/`))&#10;    }&#10;  }),&#10;});&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo22" value="const get = (url) =&gt; {&#10;  console.log('REQUEST TO:', url);&#10;  return fetch(`${url}?format=json`).then(res =&gt; res.json());&#10;};&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo23" value="const FilmType = new GraphQLObjectType({&#10;  name: 'Film',&#10;  fields: () =&gt; ({&#10;    title: {type: GraphQLString},&#10;  }),&#10;});&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo24" value="producer: {type: GraphQLString},&#10;release_date: {type: GraphQLString},&#10;director: {type: GraphQLString},&#10;episode_id: {type: GraphQLString},&#10;characters: {type: new GraphQLList(GraphQLString)},&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo31d" value="characters: {&#10;  type: new GraphQLList(CharacterType),&#10;  resolve: (film) =&gt; film.characters.map(get)&#10;},&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo32" value="const CharacterType = new GraphQLObjectType({&#10;  name: 'Character',&#10;  fields: () =&gt; ({&#10;    name: {type: GraphQLString},&#10;    height: {type: GraphQLString},&#10;    mass: {type: GraphQLString},&#10;    hair_color: {type: GraphQLString},&#10;  }),&#10;});&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo33" value="films: {&#10;  type: new GraphQLList(FilmType),&#10;  resolve: (char) =&gt; char.films.map(get)&#10;}" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo41d" value="resolve: (film, args, context) =&gt; context.charByUrlLoader.loadMany(film.characters)" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo42d" value="resolve: (char, args, context) =&gt; context.filmByUrlLoader.loadMany(char.films)" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo43" value="context: {&#10;  charByUrlLoader,&#10;  filmByUrlLoader,&#10;}," shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo44" value="const filmByUrlLoader = new DataLoader(&#10;  urls =&gt; Promise.all(urls.map(get))&#10;);&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo45" value="const charByUrlLoader = new DataLoader(&#10;  urls =&gt; Promise.all(urls.map(get))&#10;);&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo51d" value="resolve: (root, args, context) =&gt; context.filmLoader.loadMany(args.ids)&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo52" value="filmLoader," shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo53" value="const filmMap = new Map();&#10;const filmLoader = new DataLoader(&#10;  ids =&gt; Promise.all(ids.map((id) =&gt; get(`http://swapi.co/api/films/${id}/`))),&#10;  {&#10;    cacheKeyFn: key =&gt; `http://swapi.co/api/films/${key}/`,&#10;    cacheMap: filmMap,&#10;  }&#10;);&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="demo54" value=",&#10;{cacheMap: filmMap}&#10;" shortcut="SPACE" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+    </context>
+  </template>
+</templateSet>
