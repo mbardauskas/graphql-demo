@@ -1,0 +1,26 @@
+app.use('/films', (req, res) => {
+  const body = {
+    query: `query Films($ids: [String]!){ films(ids: $ids) {title}}`,
+    variables: {
+      ids: ["1", "2"]
+    },
+  };
+
+  fetch('http://localhost:3000/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  })
+    .then(response => {
+      if (!response.ok) {
+        response.text().then(text => res.send(text));
+      } else {
+        response
+          .json()
+          .then(json => res.json(json.data))
+      }
+    })
+    .catch(e => console.error(e));
+});
